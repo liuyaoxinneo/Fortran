@@ -295,9 +295,26 @@ subroutine name(子程序的输入变量)
  return !表示返回调用处继续执行主程序，可省略，会自动return
 end[subroutine name]
 ```
+*  调用方法：`call subroutine`
 * 子程序可以在程序的**任何地方**被调用，包括：主程序、其他子程序、甚至自己调用自己(递归)
 * 子程序中，变量声明独立
-* 调用方法：`call subroutine`
+* 但是，使用`conatins`可以避免在子程序中重复声明变量
+```
+prigram main
+...... ......
+call p1()
+call p2()
+..........
+ contains
+ subroutine p1()
+    ............
+ end subroutine p1
+ subroutine p2()
+    ............
+ end subroutine p2
+end
+```
+
 ## 自定义函数：function
 ```
 function fun1(输入的处理参数)
@@ -319,7 +336,7 @@ end
 *以上`return`都可以省略*
 
 自定义函数与子程序的不同：  
-1. 自定义函数调用：和变量一起声明`类型,external ::f unction`，不用`call`命令
+1. 自定义函数调用：和变量一起声明`类型,external :: function`，不用`call`命令
 ```
 program test
 ···
@@ -379,6 +396,8 @@ common a,b !声明为全局变量的一般方法
 ```
 real,save :: a,b !通过加入save来做到记录的功能
 ```
+在一个module中，声明为`private`类型的变量只能在模块内被调用，`public`类型的可以被外部程序调用
+
 使用多个文件：可以直接在VS中添加入*source files*，注意，**多个文件中只能有一个主程序存在**
 1. 独立常用函数，给其他程序使用
 2. 加快编译速度
